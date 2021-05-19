@@ -1,0 +1,83 @@
+version: '2.2'
+services:
+
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    restart: unless-stopped
+    # container_name: node01
+    environment:
+      - node.name=node01
+      - cluster.name=es-cluster-7
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - app-network
+ 
+  # Kibana - v6.4.2
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.4.2
+    restart: unless-stopped
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      - app-network
+    depends_on:
+      - node01
+  
+  # MySQL/MariaDB
+  mysql:
+    image: mariadb
+    restart: unless-stopped
+    volumes: 
+      - ./mariadb/conf:/etc/mysql
+    environment:
+      MYSQL_DATABASE: demo
+      MYSQL_ROOT_PASSWORD: demo
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    # env_file: 
+    #   - database.env
+    ports:
+      - 3306:3306
+    networks:
+      - app-network
+  
+  # NGINX
+  nginx:
+    image: nginx:alpine
+    # container_name: webserv er
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/error.log:/etc/nginx/error_log.log
+      - ./nginx/cache/:/etc/nginx/cache
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    networks:
+      - app-network
+
+volumes:
+  es-data01:
+    driver: local
+  es-db:
+    driver: local
+  mysql-db:
+    driver: local
+  
+
+networks:
+  app-network:
+    driver: bridge
