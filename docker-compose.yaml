@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     # container_name: node01
     environment:
-      - node.name=node01
+      - node.name=elasticsearch-master
       - cluster.name=es-cluster-7
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
@@ -33,7 +33,7 @@ services:
     networks:
       - app-network
     depends_on:
-      - node01
+      - elasticsearch
   
   # MySQL/MariaDB
   mysql:
