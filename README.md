@@ -147,6 +147,55 @@ This docker compose file, when run, would create the respective applications.
 * MySql: The mysql server would be listening on port 3306
 * Nginx: The webserver would be listening on port 8080 an 8081 as a reverse proxy for kibana and mysql respectively.
 
+The proposed behaviour of the web server is not possible by default, as such you would need to configure the webserver to route traffic to the various applications.
+
+To achieve this, create a `nginx.conf` file which will be used to override the default config setup for the nginx server:
+
+```
+
+worker_processes 1;
+  
+events { worker_connections 1024; 
+}
+
+http {
+
+    sendfile on;
+
+    # upstream kibana {
+    #     server kibana:5601;
+
+    # }
+
+    # upstream mysql {
+    #     server mysql:3306;
+    # }
+    
+    proxy_set_header   Host $host;
+    proxy_set_header   X-Real-IP $remote_addr;
+    proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Host $server_name;
+    
+    server {
+        listen 8080;
+ 
+        location / {
+            proxy_pass         http://kibana:5601;
+            proxy_redirect     off;
+        }
+    }
+ 
+    server {
+        listen 8081;
+ 
+        location / {
+            proxy_pass         http://mysql:3306;
+            proxy_redirect     off;
+        }
+    }
+}
+```
+This configuration basically instructs the nginx server to listen on port 8080 and 8081, and serve all the traffic coming through to the kibana application listening on port 5601, and mysql application listening on port 3306 respectively.
 
 ## Running the project
 
