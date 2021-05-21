@@ -25,10 +25,10 @@ In the event you need to provision a new server, this project contains a `main.t
 ---
 This project is basically an illustration of a single script that when executed builds three corresponding applications and configuring the nginx server to serve as a proxy for the kibana and mysql applications.
 
-First, you create a bash script `run.sh` that would contain the initialization script.
+First, you create a bash script `run.sh` that would contain the initialization script:
 
-<run.sh>:
 ```bash
+
 #!/bin/bash
 
 sudo apt-get -y update
@@ -44,16 +44,14 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update -y
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
-
-
 ```
-```
+
 The script above installs all the necessary dependencies needed to run the applications.
 
-Next, create a `docker-compose.yaml` file that would contain the applications to be built.
+Next, create a `docker-compose.yaml` file that would contain the applications to be built:
 
-<docker-compose.yaml>
 ```yaml
+
 version: '2.2'
 services:
 
@@ -140,7 +138,7 @@ networks:
   app-network:
     driver: bridge
 ```
-```
+
 
 This docker compose file, when run, would create the respective applications.
 
