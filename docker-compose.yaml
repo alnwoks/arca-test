@@ -5,7 +5,7 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
     restart: unless-stopped
-    # container_name: node01
+    container_name: elasticsearch
     environment:
       - node.name=elasticsearch-master
       - cluster.name=es-cluster-7
@@ -26,6 +26,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:6.4.2
     restart: unless-stopped
+    container_name: kibana
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:
@@ -39,6 +40,7 @@ services:
   mysql:
     image: mariadb
     restart: unless-stopped
+    container_name: mysql
     volumes: 
       - ./mariadb/conf:/etc/mysql
     environment:
@@ -56,7 +58,7 @@ services:
   # NGINX
   nginx:
     image: nginx:alpine
-    # container_name: webserv er
+    container_name: nginx
     restart: unless-stopped
     ports:
       - "8000:80"
