@@ -32,7 +32,7 @@ This project contains a `docker-compose.yaml` file that deploys:
 * nginx
 
 ## Prerequisites
-    
+
 Before you begin, ensure you have met the following requirements:
 <!--- These are just example requirements. Add, duplicate or remove as required --->
 * You have installed the latest version of `docker` and `python3`
@@ -266,7 +266,7 @@ This script now ensures the applications are created once the environment has be
 Clone the repo into the provisioned server (Preferably Ubuntu CE 18.04):
 ```
 git clone https://github.com/alnwoks/arca-test.git;
-``
+```
 
 Once done, move into the `arca-test/` directory and run the initialization script:
 ```
