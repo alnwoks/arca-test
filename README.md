@@ -28,7 +28,7 @@ This project is basically an illustration of a single script that when executed 
 First, you create a bash script `run.sh` that would contain the initialization script.
 
 <run.sh>:
-```
+```bash
 #!/bin/bash
 
 sudo apt-get -y update
@@ -53,7 +53,7 @@ The script above installs all the necessary dependencies needed to run the appli
 Next, create a `docker-compose.yaml` file that would contain the applications to be built.
 
 <docker-compose.yaml>
-```
+```yaml
 version: '2.2'
 services:
 
@@ -139,6 +139,7 @@ volumes:
 networks:
   app-network:
     driver: bridge
+```
 ```
 
 This docker compose file, when run, would create the respective applications.
