@@ -1,8 +1,8 @@
 # ARCA Payments DevOps Interview Assessment
 
 <!--- These are examples. See https://shields.io for others or to customize this set of shields. You might want to include dependencies, project status and licence info here --->
-![GitHub repo size](https://img.shields.io/github/repo-size/arca-test/README.md)
-![GitHub contributors](https://img.shields.io/github/contributors/arca-test/README.md)
+![GitHub repo size](https://img.shields.io/github/repo-size/alnwoks/arca-test)
+![GitHub contributors](https://img.shields.io/github/contributors/alnwoks/arca-test)
 
 
 This project contains a `docker-compose.yaml` file that deploys:
