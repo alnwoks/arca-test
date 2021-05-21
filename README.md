@@ -32,15 +32,15 @@ This project contains a `docker-compose.yaml` file that deploys:
 * nginx
 
 ## Prerequisites
-
+    
 Before you begin, ensure you have met the following requirements:
 <!--- These are just example requirements. Add, duplicate or remove as required --->
 * You have installed the latest version of `docker` and `python3`
 * You have a `Linux` machine. Preferably Ubuntu CE 18.04
 <!-- * You have read `<guide/link/documentation_related_to_project>`. -->
 
-The project needs a server running Ubuntu 18.04 and above with Docker installed.
-In the event you need to provision a new server, this project contains a `main.tf` file which can be used to provision a Linux instance on AWS.
+<!-- The project needs a server running Ubuntu 18.04 and above with Docker installed.
+In the event you need to provision a new server, this project contains a `main.tf` file which can be used to provision a Linux instance on AWS. -->
 
 ## Reproducing the Steps
 ---
@@ -218,18 +218,65 @@ http {
 ```
 This configuration basically instructs the nginx server to listen on port 8080 and 8081, and serve all the traffic coming through to the kibana application listening on port 5601, and mysql application listening on port 3306 respectively.
 
+Now, all we would need to is run the docker compose command to start the services:
+
+```
+docker-compose up -d
+```
+
+## Putting it all together
+
+So you now have a `docker-compose.yaml` and `run.sh` script for both creating the applications and initializing a provisioned server/environment.
+In order to better automate this process, we can merge both processes into `run.sh` file, which will call docker once all the dependencies have been installed:
+
+```bash
+
+#!/bin/bash
+
+#start deployment
+echo "Installing Dependencies..."
+sudo apt-get -y update
+sudo apt install -y libssl-dev python3-dev sshpass apt-transport-https jq moreutils ca-certificates curl gnupg2 software-properties-common python3-pip rsync
+
+#install docker
+echo "Removing legacy Docker Dependencies (if any)..."
+sudo apt-get remove docker docker-engine docker.io containerd runc -y
+
+echo "Update done. Preparing the environment..."
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+echo "Configuring..."
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+echo "Finalizing System Update.."
+sudo apt-get update -y
+echo "Installing recommended docker packages..."
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+echo "Install completed!"
+
+#run docker compose
+sudo docker-compose up > logfile
+```
+
+This script now ensures the applications are created once the environment has been successfully initialized.
+
+
 ## Running the project
 
-Clone the repo:
+Clone the repo into the provisioned server (Preferably Ubuntu CE 18.04):
 ```
-git clone https://github.com/alnwoks/arca-test.git
-```
+git clone https://github.com/alnwoks/arca-test.git;
+``
 
 Once done, move into the `arca-test/` directory and run the initialization script:
 ```
+cd arca-test
 ./run.sh
 ```
 This will install the necessary dependencies and deploy the applications.
+
+* Kibana can be reached via `<http://server-ip:8080>`
+* MySQL can be reached via `<http://server-ip:8081>`
 
 ## Contact
 

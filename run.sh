@@ -23,7 +23,3 @@ echo "Install completed!"
 
 #run docker compose
 sudo docker-compose up > logfile
-
-#update nginx confg and restart server
-#sudo cp -r nginx.conf 
-
