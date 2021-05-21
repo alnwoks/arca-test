@@ -61,13 +61,13 @@ services:
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "8000:80"
-      - "4430:443"
+      - "8081:8081"
+      - "8080:8080"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/error.log:/etc/nginx/error_log.log
-      - ./nginx/cache/:/etc/nginx/cache
-      - /etc/letsencrypt/:/etc/letsencrypt/
+      # - ./nginx/cache/:/etc/nginx/cache
+      # - /etc/letsencrypt/:/etc/letsencrypt/
     networks:
       - app-network
 
