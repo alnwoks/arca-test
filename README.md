@@ -115,8 +115,8 @@ services:
     container_name: nginx
     restart: unless-stopped
     ports:
-      - "8000:80"
-      - "4430:443"
+      - "8080:8080"
+      - "8081:8081"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/error.log:/etc/nginx/error_log.log
@@ -142,6 +142,12 @@ networks:
 
 This docker compose file, when run, would create the respective applications.
 
+* Elasticsearch: This application would act as the backend for the kibana application.
+* Kibana: This is an open-source business management tool would be listening on port 5601
+* MySql: The mysql server would be listening on port 3306
+* Nginx: The webserver would be listening on port 8080 an 8081 as a reverse proxy for kibana and mysql respectively.
+
+
 ## Running the project
 
 Clone the repo:
@@ -155,14 +161,6 @@ Once done, move into the `arca-test/` directory and run the initialization scrip
 ```
 This will install the necessary dependencies and deploy the applications.
 
-## Installing <project_name>
-
-To install <project_name>, follow these steps:
-
-Linux and macOS:
-```
-<install_command>
-```
 ## Contact
 
 You can reach me at <chalonnwokedike@gmail.com>.
